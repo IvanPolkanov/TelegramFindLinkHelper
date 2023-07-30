@@ -1,6 +1,7 @@
 ﻿using CommandLine;
 using CsvHelper;
 using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using TelegramExportHelper;
@@ -28,8 +29,8 @@ internal class Program
 #if DEBUG
         var options = new ParseOptions()
         {
-            InputFilePath = @"C:\TestData\TGExport\result.json",
-            OutputFilePath = "C:\\TestData\\TGExport"
+            InputFilePath = @"C:\TestData\TGExport\result.json"
+            //OutputFilePath = "C:\\TestData\\TGExport"
         };
 
         RunParseTelegramDataJsonExport(options);
@@ -55,7 +56,12 @@ internal class Program
 
         if (string.IsNullOrEmpty(parseOptions.OutputFilePath) || !Directory.Exists(parseOptions.OutputFilePath))
         {
-            var startupPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            //var startupPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
+
+
+            Console.WriteLine($"-----------   {startupPath}");
+
             var exportDirectory = $"{startupPath}\\Export";
 
             if (!Directory.Exists(exportDirectory))
@@ -76,6 +82,8 @@ internal class Program
         var chatContent = File.ReadAllText(inputFilePath);
 
         var result = TelegramHelper.GetAllHttpLinks(chatContent);
+
+        Console.WriteLine($"Save file to \n {outputFilePath} \n");
 
         using (var writer = new StreamWriter(outputFilePath))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
