@@ -30,7 +30,7 @@ internal class Program
         var options = new ParseOptions()
         {
             InputFilePath = @"C:\TestData\TGExport\result.json"
-            //OutputFilePath = "C:\\TestData\\TGExport"
+            OutputFilePath = "C:\\TestData\\TGExport"
         };
 
         RunParseTelegramDataJsonExport(options);
@@ -59,9 +59,6 @@ internal class Program
             //var startupPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
             var startupPath = Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName);
 
-
-            Console.WriteLine($"-----------   {startupPath}");
-
             var exportDirectory = $"{startupPath}\\Export";
 
             if (!Directory.Exists(exportDirectory))
@@ -82,8 +79,6 @@ internal class Program
         var chatContent = File.ReadAllText(inputFilePath);
 
         var result = TelegramHelper.GetAllHttpLinks(chatContent);
-
-        Console.WriteLine($"Save file to \n {outputFilePath} \n");
 
         using (var writer = new StreamWriter(outputFilePath))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
