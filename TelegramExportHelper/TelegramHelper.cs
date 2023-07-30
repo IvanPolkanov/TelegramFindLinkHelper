@@ -8,6 +8,11 @@ namespace TelegramExportHelper;
 
 public class TelegramHelper
 {
+    /// <summary>
+    /// Parse all links from exported dialog
+    /// </summary>
+    /// <param name="chatContent"></param>
+    /// <returns></returns>
     public static IEnumerable<LinkData> GetAllHttpLinks(string chatContent)
     {
         var chatData = JsonSerializer.Deserialize<TelegramJSONChatExport>(chatContent);
