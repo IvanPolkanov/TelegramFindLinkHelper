@@ -1,41 +1,47 @@
-﻿using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using TelegramFindLinkHelper.Models;
+﻿using CsvHelper;
+using System;
+using System.Formats.Asn1;
+using System.Globalization;
+using System.IO;
+using TelegramExportHelper;
 
-namespace TelegramFindLinkHelper
+namespace TelegramFindLinkHelper;
+
+internal class Program
 {
-    internal class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+
+
+        string chatContent = string.Empty;
+
+#if DEBUG
+        chatContent = File.ReadAllText(@"C:\Users\polka\Downloads\TGExport\ChatExport_2023-07-30\result.json");
+#endif
+
+#if (!DEBUG)
+  //var str = new StringBuilder();
+
+        //foreach (var item in args)
+        //{
+        //    str.Append(item);
+        //}
+
+        //Console.WriteLine($"Your args are : \n\t\t\t {str.ToString()}");
+#endif
+
+
+
+        var result = TelegramHelper.GetAllHttpLinks(chatContent);
+
+        using (var writer = new StreamWriter(@"C:\Users\polka\Downloads\TGExport\ChatExport_2023-07-30\links.csv"))
+        using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
         {
-            var str = new StringBuilder();
-
-            foreach (var item in args)
-            {
-                str.Append(item);
-            }
-
-            Console.WriteLine($"Your args are : \n\t\t\t {str.ToString()}");
-
-            //var exists = File.Exists(filePath);
-
-            //if (!exists)
-            //{
-            //    Console.WriteLine("File has not been founded:");
-            //    continue;
-            //}
-
-            //var jsonContent = File.ReadAllText(filePath);
-
-            //var chatData = JsonSerializer.Deserialize<TelegramJSONChatExport>(jsonContent);
-            //var messangesWithDate = chatData.messages.Select(x => (x.date, x.text_entities?.FirstOrDefault()?.text)).Where(x => x.text != null).ToArray();
-
-            //var messangesWithDateHttp = messangesWithDate.Where(x => x.text.StartsWith("http")).ToArray();
-
-            Console.ReadLine();
+            csv.WriteRecords(result);
         }
+
+        Console.ReadLine();
     }
-
-
 }
+
+

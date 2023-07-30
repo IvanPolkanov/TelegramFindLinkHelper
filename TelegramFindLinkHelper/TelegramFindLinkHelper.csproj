@@ -3,13 +3,17 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
+		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<AssemblyName>tflh</AssemblyName>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="LinkSettings\" />
+	  <PackageReference Include="CsvHelper" Version="30.0.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\TelegramExportHelper\TelegramExportHelper.csproj" />
 	</ItemGroup>
 
 </Project>
