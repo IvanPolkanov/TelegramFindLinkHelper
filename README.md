@@ -12,19 +12,19 @@ Just parses all available links from the exported telegram dialog.
 
 No install. Just use CLI tools or download nuget package to use in you own project
 
-### Executing program
+### Executing program via CLI
 
-* How to run the program
-* Step-by-step bullets
 ```
-code blocks for commands
+tflh.exe -f "your file path here"
 ```
 
-## Help
+### Use via nuget packet
 
-Any advise for common problems or issues.
-```
-command to run if program contains helper info
+```csharp
+  using TelegramExportHelper;
+
+  //chatContent - you chat export from telegram
+  var result = TelegramHelper.GetAllHttpLinks(chatContent);
 ```
 
 ## Authors
