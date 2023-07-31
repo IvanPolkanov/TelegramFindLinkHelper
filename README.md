@@ -14,11 +14,12 @@ No install. Just use CLI tools or download nuget package to use in you own proje
 
 ### Executing program via CLI
 
-####Show help info
+Show help info
 ```
 tflh.exe -h
 ```
 
+Parse export file
 ```
 tflh.exe -f "your file path here"
 ```
