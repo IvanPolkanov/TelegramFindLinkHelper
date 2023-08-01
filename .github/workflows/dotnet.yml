@@ -21,4 +21,5 @@ jobs:
         working-directory : src/TelegramFindLinkHelper
       - name: Build
         run: dotnet build --configuration Release --no-restore
+        working-directory : src/TelegramFindLinkHelper
         
