@@ -1,3 +1,5 @@
+[![dotnet package](https://github.com/IvanPolkanov/TelegramFindLinkHelper/actions/workflows/dotnet.yml/badge.svg)](https://github.com/IvanPolkanov/TelegramFindLinkHelper/actions/workflows/dotnet.yml)
+
 # Telegram Find Link Helper
 
 Wanna parse all links from any telegram dialog. Right place.
