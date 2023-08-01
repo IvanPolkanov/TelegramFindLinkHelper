@@ -26,3 +26,8 @@ jobs:
         run: dotnet build --configuration Release --no-restore
         working-directory : src/TelegramFindLinkHelper
         
+      - name: Upload build
+        uses: actions/upload-artifact@v2
+        with: 
+          name: assets-for-download
+          path: downloads
