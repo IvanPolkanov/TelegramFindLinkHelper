@@ -8,7 +8,6 @@
 		<Title>Telegram Export Helper</Title>
 		<Description>Helps parse some data from telegram json data export</Description>
 		<PackageProjectUrl>https://github.com/IvanPolkanov/TelegramFindLinkHelper</PackageProjectUrl>
-		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/IvanPolkanov/TelegramFindLinkHelper</RepositoryUrl>
 		<Authors>Ivan Polkanov</Authors>
 		<Version>1.0.0</Version>
@@ -17,7 +16,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\README.md">
+		<None Include="..\..\README.md">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
