@@ -8,6 +8,9 @@
 		<AssemblyName>tflh</AssemblyName>
 		<SignAssembly>False</SignAssembly>
 		<Version>1.0.0</Version>
+		<Title>Just fine CLI to parse telegram data</Title>
+		<Authors>Ivan Polkanov</Authors>
+		<PackageProjectUrl>https://github.com/IvanPolkanov/TelegramFindLinkHelper</PackageProjectUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
