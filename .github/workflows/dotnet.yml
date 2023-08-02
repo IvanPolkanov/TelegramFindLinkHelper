@@ -30,4 +30,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: build-artifact
-          path: output/
+          path: ../home/runner/work/TelegramFindLinkHelper/TelegramFindLinkHelper/src/TelegramFindLinkHelper/bin/Release/net6.0/
