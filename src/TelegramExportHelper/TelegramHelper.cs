@@ -13,7 +13,7 @@ public class TelegramHelper
     /// </summary>
     /// <param name="chatContent"></param>
     /// <returns></returns>
-    public static IEnumerable<LinkData> GetAllHttpLinks(string chatContent)
+    public static IEnumerable<LinkData> GetAllHttpLinksFromSingleChatExport(string chatContent)
     {
         var chatData = JsonSerializer.Deserialize<TelegramJSONChatExport>(chatContent);
 
@@ -33,6 +33,40 @@ public class TelegramHelper
 
 
             links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text }).ToArray());
+        }
+
+        return links.OrderBy(x => x.MessageDate).
+                  ToArray();
+    }
+
+    /// <summary>
+    /// Parse all links from exported dialogs
+    /// </summary>
+    /// <param name="chatContent"></param>
+    /// <returns></returns>
+    public static IEnumerable<LinkData> GetAllHttpLinksFromAllChatsExport(string telegramChatsExport)
+    {
+        var chatsData = JsonSerializer.Deserialize<TelegramJSONChatsExport>(telegramChatsExport);
+
+        var links = new List<LinkData>();
+
+        foreach (var chat in chatsData.chats.list)
+        {
+            foreach (var message in chat.messages)
+            {
+                if (message.text_entities == null)
+                    continue;
+
+                var tempLinks = message.text_entities.Where(x => x.type == "link").ToArray();
+
+                if (!tempLinks.Any())
+                    continue;
+
+                var date = message.date;
+
+
+                links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text }).ToArray());
+            }
         }
 
         return links.OrderBy(x => x.MessageDate).

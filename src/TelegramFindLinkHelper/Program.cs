@@ -1,10 +1,12 @@
 ﻿using CommandLine;
 using CsvHelper;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using TelegramExportHelper;
+using TelegramExportHelper.Models;
 
 namespace TelegramFindLinkHelper;
 
@@ -16,6 +18,9 @@ internal class Program
         [Option('f', "file", Required = true, HelpText = "Input file path to be processed")]
         public string InputFilePath { get; set; }
 
+        [Option('s', "single", Required = true, HelpText = "Parse single chat export or collection")]
+        public bool Single { get; set; }
+
         [Option('o', "output",
                 Default = "",
                 HelpText = "Output file path")]
@@ -24,16 +29,8 @@ internal class Program
 
     static void Main(string[] args)
     {
-        string chatContent = string.Empty;
-
 #if DEBUG
-        var options = new ParseOptions()
-        {
-            InputFilePath = @"C:\TestData\TGExport\result.json"
-            OutputFilePath = "C:\\TestData\\TGExport"
-        };
-
-        RunParseTelegramDataJsonExport(options);
+        DebugInteractiveMode();
 #endif
 
 #if (!DEBUG)
@@ -42,6 +39,33 @@ internal class Program
        (ParseOptions opts) => RunParseTelegramDataJsonExport(opts),
        errs => 1);
 #endif        
+    }
+
+    private static void DebugInteractiveMode()
+    {
+        var single = false;
+        ParseOptions options;
+
+        if (single)
+        {
+            options = new ParseOptions()
+            {
+                InputFilePath = @"C:\TestData\TGExport\result.json",
+                OutputFilePath = "C:\\TestData\\TGExport",
+                Single = single,
+            };
+        }
+        else
+        {
+            options = new ParseOptions()
+            {
+                InputFilePath = @"C:\TestData\TGExport\AllChats\result.json",
+                OutputFilePath = @"C:\TestData\TGExport\AllChats",
+                Single = single,
+            };
+        }
+
+        RunParseTelegramDataJsonExport(options);
     }
 
     private static int RunParseTelegramDataJsonExport(ParseOptions parseOptions)
@@ -69,16 +93,21 @@ internal class Program
 
         outputPath = $"{outputPath}\\export.csv";
 
-        GetAllDataAndSave(parseOptions.InputFilePath, outputPath);
+        GetAllDataAndSave(parseOptions.InputFilePath, outputPath, parseOptions.Single);
 
         return 0;
     }
 
-    private static void GetAllDataAndSave(string inputFilePath, string outputFilePath)
+    private static void GetAllDataAndSave(string inputFilePath, string outputFilePath, bool single)
     {
-        var chatContent = File.ReadAllText(inputFilePath);
+        var rawContent = File.ReadAllText(inputFilePath);
 
-        var result = TelegramHelper.GetAllHttpLinks(chatContent);
+        IEnumerable<LinkData> result;
+
+        if (single)
+            result = TelegramHelper.GetAllHttpLinksFromSingleChatExport(rawContent);
+        else
+            result = TelegramHelper.GetAllHttpLinksFromAllChatsExport(rawContent);
 
         using (var writer = new StreamWriter(outputFilePath))
         using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
