@@ -18,11 +18,10 @@ internal class Program
         [Option('f', "file", Required = true, HelpText = "Input file path to be processed")]
         public string InputFilePath { get; set; }
 
-        [Option('s', "single", Required = true, HelpText = "Parse single chat export or collection")]
+        [Option('s', "single", HelpText = "Parse single chat export or collection")]
         public bool Single { get; set; }
 
         [Option('o', "output",
-                Default = "",
                 HelpText = "Output file path")]
         public string OutputFilePath { get; set; }
     }
