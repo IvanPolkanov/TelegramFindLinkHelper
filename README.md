@@ -8,25 +8,28 @@ Wanna parse all links from any telegram dialog. Right place.
 
 Just parses all available links from the exported telegram dialog.
 
-## Getting Started
-
-### Installing
+## Installing
 
 No install. Just use CLI tools or download nuget package to use in you own project
 
-### Executing program via CLI
+## Executing program via CLI
 
-Show help info
+### Show help info
 ```
 tflh.exe -h
 ```
 
-Parse export file
+### Parse single chat export
+```
+tflh.exe -f "your file path here" -s
+```
+
+### Parse chata export from telegram
 ```
 tflh.exe -f "your file path here"
 ```
 
-### Use via nuget packet
+## Use via nuget packet
 
 ```csharp
   using TelegramExportHelper;
