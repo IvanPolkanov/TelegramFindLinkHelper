@@ -4,6 +4,7 @@ namespace TelegramExportHelper.Models;
 
 public sealed class LinkData
 {
-    public string Content { get; set; }
     public DateTime MessageDate { get; set; }
+    public string DomainName { get; set; }
+    public string Content { get; set; }
 }

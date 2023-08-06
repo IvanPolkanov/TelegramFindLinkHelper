@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using TelegramExportHelper.Models;
@@ -25,14 +26,15 @@ public class TelegramHelper
                 continue;
 
             var tempLinks = message.text_entities.Where(x => x.type == "link").ToArray();
+            var tempHrefLinks = message.text_entities.Where(x => x.type == "text_link").ToArray();
 
-            if (!tempLinks.Any())
+            if (!tempLinks.Any() && !tempHrefLinks.Any())
                 continue;
 
             var date = message.date;
 
-
-            links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text }).ToArray());
+            links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text, DomainName = GetDomainNameFromUrl(x.text) }).ToArray());
+            links.AddRange(tempHrefLinks.Select(x => new LinkData() { MessageDate = date, Content = x.href, DomainName = GetDomainNameFromUrl(x.href) }).ToArray());
         }
 
         return links.OrderBy(x => x.MessageDate).
@@ -58,18 +60,42 @@ public class TelegramHelper
                     continue;
 
                 var tempLinks = message.text_entities.Where(x => x.type == "link").ToArray();
+                var tempHrefLinks = message.text_entities.Where(x => x.type == "text_link").ToArray();
 
-                if (!tempLinks.Any())
+                if (!tempLinks.Any() && !tempHrefLinks.Any())
                     continue;
 
                 var date = message.date;
 
-
-                links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text }).ToArray());
+                links.AddRange(tempLinks.Select(x => new LinkData() { MessageDate = date, Content = x.text, DomainName = ExtractDomainNameFromURL(x.text) }).ToArray());
+                links.AddRange(tempHrefLinks.Select(x => new LinkData() { MessageDate = date, Content = x.href, DomainName = ExtractDomainNameFromURL(x.href) }).ToArray());
             }
         }
 
         return links.OrderBy(x => x.MessageDate).
                   ToArray();
+    }
+
+    private static string GetDomainNameFromUrl(string url)
+    {
+        try
+        {
+            Uri myUri = new Uri(url);
+            var host = myUri.Host;
+            return host;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
+    }
+
+    private static string ExtractDomainNameFromURL(string Url)
+    {
+        return System.Text.RegularExpressions.Regex.Replace(
+            Url,
+            @"^([a-zA-Z]+:\/\/)?([^\/]+)\/.*?$",
+            "$2"
+        );
     }
 }
