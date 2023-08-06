@@ -10,7 +10,7 @@
 		<PackageProjectUrl>https://github.com/IvanPolkanov/TelegramFindLinkHelper</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/IvanPolkanov/TelegramFindLinkHelper</RepositoryUrl>
 		<Authors>Ivan Polkanov</Authors>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
 		<PacketId></PacketId>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
